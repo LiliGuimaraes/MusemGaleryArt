@@ -1,2 +1,4 @@
 # MusemGaleryArt
-Gallery Metropolitan Museum of Arts
+project to create a Gallery of Arts using fetch API
+
+
