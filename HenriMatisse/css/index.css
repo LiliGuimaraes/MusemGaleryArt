@@ -1,0 +1,15 @@
+.logo {
+    position: absolute;
+    top: calc((100vh/24) + 0rem);
+    left: calc((100vh/24) + 0rem);
+    width: 5.94rem;
+    z-index: 205;
+    border-bottom: 0;
+    line-height: 0;
+}
+
+.logo--is-faded {
+    opacity: 0;
+    -webkit-animation: fade-in 1.5s ease-out forwards .5s;
+    animation: fade-in 1.5s ease-out forwards .5s;
+}

@@ -1,0 +1,33 @@
+        #grid {
+            display: grid;
+            grid-column-gap: 50px;
+            grid-template-columns: auto auto auto;
+            background-color: #f9f8fd;
+            padding: 10px;
+        }
+        
+        .grid-item {
+            background-color: #393f4d;
+            border: 1px solid rgba(0, 0, 0, 0.8);
+            padding: 80px;
+            margin-top: 1rem;
+            font-size: 30px;
+            text-align: center;
+        }
+        
+        img {
+            max-width: 100% !important;
+            height: 350px;
+        }
+        
+        a {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-size: 15px;
+            color: #f9f8fd;
+            margin-top: 0.5rem;
+        }
+        
+        a:hover {
+            color: whitesmoke;
+            border: solid 1px white;
+        }
