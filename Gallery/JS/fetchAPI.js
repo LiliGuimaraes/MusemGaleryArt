@@ -1,19 +1,47 @@
-var traverson = require('traverson'),
-    JsonHalAdapter = require('traverson-hal'),
-    xappToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IiIsImV4cCI6MTU1OTQ5ODI0MywiaWF0IjoxNTU4ODkzNDQzLCJhdWQiOiI1Y2VhZDM4Mzk5ZTdlMjc0YzQ2MTY3NzEiLCJpc3MiOiJHcmF2aXR5IiwianRpIjoiNWNlYWQzODNmYTJlZmQ1NGM4YzhiYmY0In0.VxCWKu9evor-ff-c31a45kuF-_JkaNP_EUX0fjHy9W4';
+/* Import the express lirbary 
+make node server to serve the*/
+const express = require('express');
+var traverson = require('traverson');
 
-traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter);
-api = traverson.from('https://api.artsy.net/api').jsonHal();
+// Import the axios library, to make HTTP requests
+const axios = require('axios');
 
-api.newRequest()
-    .follow('artist')
-    .withRequestOptions({
+
+// This is the client ID and client secret that you obtained
+// while registering the application
+const clientID = 'd32b860e1a3f3435695a'
+const clientSecret = '79330bdc99ca3d3f3b829b9e66cc6c69'
+
+// Create a new express application and use
+// the express static middleware, to serve all files
+// inside the public directory
+const app = express()
+app.use(express.static(__dirname + '/public'))
+
+// Declare the redirect route
+app.get('/oauth/redirect', (req, res) => {
+    // The req.query object has the query params that
+    // were sent to this route. We want the `code` param
+    const requestToken = req.query.code
+    axios({
+        // make a POST request
+        method: 'post',
+        // to the Github authentication API, with the client ID, client secret
+        // and request token
+        url: `https://api.artsy.net/api/tokens/xapp_token?client_id=${clientID}
+        &client_secret=${clientSecret}&code=${requestToken}`,
+        // Set the content type header, so that we get the response in JSOn
         headers: {
-            'X-Xapp-Token': xappToken,
-            'Accept': 'application/vnd.artsy-v2+json'
+            accept: 'application/json'
         }
+    }).then((response) => {
+        // Once we get the response, extract the access token from
+        // the response body
+        const accessToken = response.data.access_token
+            // redirect the user to the welcome page, along with the access token
+        res.redirect(`/welcome.html?access_token=${accessToken}`)
     })
-    .withTemplateParameters({ id: 'andy-warhol' })
-    .getResource(function(error, andyWarhol) {
-        console.log(andyWarhol.name + 'was born in ' + andyWarhol.birthday + ' in ' + andyWarhol.hometown);
-    });
+})
+
+app.use(express.static(__dirname + '/public'))
+app.listen(8080)
